@@ -7,6 +7,8 @@ class email:
 
     def __init__(self):
         self.os.chdir(r'C:\Users\Aimee\Pictures\TSS Python Screenshots\proforma reminder')
+        self.jobref = None
+        self.jobreffound = False
         self.invoicingtabunsel = False
         self.invoicingtabsel = False
         self.invoiceproductionsel = False
@@ -15,10 +17,27 @@ class email:
         self.aspdfdropdown = False
         self.emailaspdf = False
         self.emailto = False
-        self.emails = False
+        self.jobcontactemail = False
         self.emails2 = False
+        self.displayasemail = False
+        self.popup = False
+        self.proformaemailwindow = False
+        self.TCs = False
 
     def r_proforma(self):
+        detailstabsel = self.pyautogui.locateOnScreen('detailstab.png', confidence=0.9)
+        detailstabsel = self.pyautogui.center(detailstabsel)
+        x, y = detailstabsel
+        self.pyautogui.click(x, y)
+        print('I have selected the Details tab.')
+        while self.jobreffound == False:
+            jobref = self.pyautogui.locateOnScreen('jobref.png', confidence=0.9)
+            if jobref != None:
+                self.pyautogui.hotkey('ctrl', 'c')
+                self.jobref = self.pyperclip.paste()
+                print('Job ref {} reminder will be sent now.'.format(self.jobref))
+                self.jobreffound = True
+                break
         while self.invoicingtabsel == False:
             invoicingtabunsel = self.pyautogui.locateOnScreen('invoicingtabunsel.png', confidence=0.9)
             invoicingtabsel = self.pyautogui.locateOnScreen('invoicingtabsel.png', confidence=0.9)
@@ -96,7 +115,7 @@ class email:
                 print('I have selected the Email To box.')
                 self.emailto = True
                 break
-        while self.emails == False:
+        while self.jobcontactemail == False:
             jobcontactemail = self.pyautogui.locateOnScreen('jobcontactemail.png', confidence=0.9)
             if jobcontactemail != None:
                 jobcontactemail = self.pyautogui.center(jobcontactemail)
@@ -114,6 +133,65 @@ class email:
                 num = num + 1
             except:
                 num = num + 1
+        print('I have checked for all accounts  emails and CCed them if found.')
+        emailto_ok = self.pyautogui.locateOnScreen('emailto_ok.png', confidence=0.9)
+        emailto_ok = self.pyautogui.center(emailto_ok)
+        x, y = emailto_ok
+        self.pyautogui.click(x, y)
+        while self.displayasemail == False:
+            displayasemail = self.pyautogui.locateOnScreen('displayasemail.png', confidence=0.9)
+            if displayasemail != None:
+                displayasemail = self.pyautogui.center(displayasemail)
+                x, y = displayasemail
+                self.pyautogui.click(x, y)
+                print('I have selected the display as email tickbox.')
+                self.displayasemail = True
+                break
+        emailsubject = self.pyautogui.locateOnScreen('emailsubject.png', confidence=0.9)
+        emailsubject = self.pyautogui.center(emailsubject)
+        x, y = emailsubject
+        self.pyautogui.click(x, y)
+        self.pyautogui.press('space')
+        self.pyautogui.typewrite(self.jobref)
+
+        emailsend = self.pyautogui.locateOnScreen('emailsend.png', confidence=0.9)
+        emailsend = self.pyautogui.center(emailsend)
+        x, y = emailsend
+        self.pyautogui.click(x, y)
+        while self.popup == False:
+            popup = self.pyautogui.locateOnScreen('allowaccessfor.png', confidence=0.9)
+            if popup != None:
+                popup = self.pyautogui.center(popup)
+                x, y = popup
+                self.pyautogui.click(x, y)
+                allow = self.pyautogui.locateOnScreen('allow.png', confidence=0.9)
+                allow = self.pyautogui.center(allow)
+                x, y = allow
+                self.pyautogui.click(x, y)
+                print('I have selected the email-Allow access for 1 minute-popup.')
+                self.popup = True
+            else:
+                print('Please wait for popup to load.')
+                continue
+
+        while self.proformaemailwindow == False:
+            proformaemailwindow = self.pyautogui.locateOnScreen('proformaemailwindow.png', confidence=0.7)
+            if proformaemailwindow != None:
+                print('Proforma email window has opened')
+                attachfile = self.pyautogui.locateOnScreen('attachfile.png', confidence=0.9)
+                attachfile = self.pyautogui.center(attachfile)
+                x, y = attachfile
+                self.pyautogui.click(x, y)
+                self.proformaemailwindow = True
+        while self.TCs == False:
+            TCs = self.pyautogui.locateOnScreen('TCs.png', confidence=0.9)
+            if TCs != None:
+                TCs = self.pyautogui.locateOnScreen('TCs.png', confidence=0.9)
+                TCs = self.pyautogui.center(TCs)
+                x, y = TCs
+                self.pyautogui.click(x, y)
+                print('I have now attached Terms & Conditions file.')
+                self.TCs = True
 
 
     def selectallaccountsemails(self, num):
