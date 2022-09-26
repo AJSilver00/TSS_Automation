@@ -10,37 +10,18 @@ class email:
         self.invoicingtabunsel = False
         self.invoicingtabsel = False
         self.invoiceproductionsel = False
-#    def r2(self):
-        # if paymentduedate is before startdate:
-            # print('This is not an acc cust.')
-            # if todaysdate is 1 week b4 startdate then send 'proforma1' email
-            # elif startdate is tomorrow then send 'proforma2' email AND make a note for myself to ring them up telling them to pay
-
-        # else:
-            # print('This is an acc cust.')
-            # if todaysdate is less than 1 week b4 paymentduedate and remindersentdate is 1 week ago then do nothing
-            # if todaysdate is less than 1 week b4 paymentduedate and remindersentdate is more than 1 week ago then send 'vat1' email.
-            # elif todaysdate is more than 1 week after paymentduedate and remindersentdate is null then print('no reminder sent yet! They are overdue!') and send 'vat3' email. Also make sure remindersentdate is not null anymore once the email is sent.
-            # elif todaysdate is more than 1 week after paymentduedate and remindersentdate is 1 or more weeks ago then print('no reminder sent yet!' and make a note of it for myself to check this later, as I should have sent one.)
-            # else:
-                # if todaysdate is exactly 1 week b4 paymentduedate then send 'vat1' email
-                    # if remindersentdate is past paymentduedate by more than 1 week, then make a note of it for myself to check this later, as it should have been sent exactly 1 week past paymentduedate!
-                # elif todaysdate == paymentduedate then send 'vat2' email
-                    # if remindersentdate is null OR is more than 1 week b4 paymentduedate, then make a note of it for myself to check this later, as it should have been sent exactly 1 week before paymentduedate!
-                # else:
-                    # if todaysdate is past paymentduedate by 1 week
-                        # elif remindersentdate was exactly 1 week ago then send 'vat3' email.
-                    # if number of reminders sent past paymentduedate is 3:
-                        # then send 'baddebt2' email
-                    # elif number of reminders sent past paymentduedate is > 3:
-                        # then make a note of it, so I can check this later.
-                    # else just send 'vat3' email.
-                # else go onto next row in Excel report and continue loop (i.e. restart the loop).
+        self.dropdown = False
+        self.orderconfprofinv = False
+        self.aspdfdropdown = False
+        self.emailaspdf = False
+        self.emailto = False
+        self.emails = False
+        self.emails2 = False
 
     def r_proforma(self):
         while self.invoicingtabsel == False:
-            invoicingtabunsel = self.pyautogui.locateOnScreen('invoicingtabunsel.png', confidence=0.99)
-            invoicingtabsel = self.pyautogui.locateOnScreen('invoicingtabsel.png', confidence=0.99)
+            invoicingtabunsel = self.pyautogui.locateOnScreen('invoicingtabunsel.png', confidence=0.9)
+            invoicingtabsel = self.pyautogui.locateOnScreen('invoicingtabsel.png', confidence=0.9)
             if invoicingtabunsel != None:
                 invoicingtabunsel = self.pyautogui.center(invoicingtabunsel)
                 x, y = invoicingtabunsel
@@ -48,16 +29,14 @@ class email:
                 print('I have selected the Invoicing tab')
                 self.invoicingtabsel = True
             else:
-                invoicingtabsel = self.pyautogui.locateOnScreen('invoicingtabsel.png',  confidence=0.99)
+                invoicingtabsel = self.pyautogui.locateOnScreen('invoicingtabsel.png', confidence=0.9)
                 if invoicingtabsel != None:
                     print('Invoicing tab is already selected')
                     self.invoicingtabsel = True
                     break
-                else:
-                    print('Cannot find Invoice Production tab yet. Please wait.')
         while self.invoiceproductionsel == False:
-            invoiceproductionunsel = self.pyautogui.locateOnScreen('invoiceproductionunsel.png', confidence=0.99)
-            invoiceproductionsel = self.pyautogui.locateOnScreen('invoiceproductionsel.png', confidence=0.99)
+            invoiceproductionunsel = self.pyautogui.locateOnScreen('invoiceproductionunsel.png', confidence=0.9)
+            invoiceproductionsel = self.pyautogui.locateOnScreen('invoiceproductionsel.png', confidence=0.9)
             if invoiceproductionunsel != None:
                 invoiceproductionunsel = self.pyautogui.center(invoiceproductionunsel)
                 x, y = invoiceproductionunsel
@@ -72,7 +51,116 @@ class email:
                     break
                 else:
                     print('Invoice Production tab has not loaded yet. Please wait.')
+        while self.dropdown == False:
+            mainhireinvb4payment = self.pyautogui.locateOnScreen('mainhireinvb4payment.png', confidence=0.9)
+            if mainhireinvb4payment != None:
+                x = mainhireinvb4payment.left + mainhireinvb4payment.width - 20
+                y = mainhireinvb4payment.top + 20
+                self.pyautogui.click(x, y)
+                self.dropdown = True
+                break
+        while self.orderconfprofinv == False:
+            orderconfprofinv = self.pyautogui.locateOnScreen('orderconfprofinv.png', confidence=0.9)
+            if orderconfprofinv != None:
+                orderconfprofinv = self.pyautogui.center(orderconfprofinv)
+                x, y = orderconfprofinv
+                self.pyautogui.click(x, y)
+                print('I have selected the Order Confirmation dropdown option')
+                self.orderconfprofinv = True
+                break
+            else:
+                print('Dropdown list not yet loaded. Please wait.')
+        while self.aspdfdropdown == False:
+            aspdfdropdown = self.pyautogui.locateOnScreen('aspdfdropdown.png', confidence=0.9)
+            if aspdfdropdown != None:
+                aspdfdropdown = self.pyautogui.center(aspdfdropdown)
+                x, y = aspdfdropdown
+                self.pyautogui.click(x, y)
+                self.aspdfdropdown = True
+                break
+        while self.emailaspdf == False:
+            emailaspdf = self.pyautogui.locateOnScreen('emailaspdf.png', confidence=0.9)
+            if emailaspdf != None:
+                emailaspdf = self.pyautogui.center(emailaspdf)
+                x, y = emailaspdf
+                self.pyautogui.click(x, y)
+                print('I have selected the Email Proforma as PDF option.')
+                self.emailaspdf = True
+                break
+        while self.emailto == False:
+            emailto = self.pyautogui.locateOnScreen('emailto.png', confidence=0.9)
+            if emailto != None:
+                emailto = self.pyautogui.center(emailto)
+                x, y = emailto
+                self.pyautogui.click(x, y)
+                print('I have selected the Email To box.')
+                self.emailto = True
+                break
+        while self.emails == False:
+            jobcontactemail = self.pyautogui.locateOnScreen('jobcontactemail.png', confidence=0.9)
+            if jobcontactemail != None:
+                jobcontactemail = self.pyautogui.center(jobcontactemail)
+                x, y = jobcontactemail
+                self.pyautogui.moveTo(x, y)
+                self.pyautogui.click(clicks=2)
+                print('I have selected the Main Job Contact email.')
+                self.jobcontactemail = True
+                break
+        num = 0
+        x = 6
+        while num < x:
+            try:
+                email().selectallaccountsemails(num)
+                num = num + 1
+            except:
+                num = num + 1
 
+
+    def selectallaccountsemails(self, num):
+
+        def ACCOUNT_DIRECTOR():
+            ACCOUNTDIRECTOR = self.pyautogui.locateOnScreen('ACCOUNTDIRECTOR.png', confidence=0.9)
+            ACCOUNTDIRECTOR = self.pyautogui.center(ACCOUNTDIRECTOR)
+            x, y = ACCOUNTDIRECTOR
+            self.pyautogui.moveTo(x, y)
+            self.pyautogui.click(clicks=2)
+
+        def ACCOUNT_MANAGER():
+            ACCOUNTMANAGER = self.pyautogui.locateOnScreen('ACCOUNTMANAGER.png', confidence=0.9)
+            ACCOUNTMANAGER = self.pyautogui.center(ACCOUNTMANAGER)
+            x, y = ACCOUNTMANAGER
+            self.pyautogui.moveTo(x, y)
+            self.pyautogui.click(clicks=2)
+
+        def ACCOUNTANT_():
+            ACCOUNTANT = self.pyautogui.locateOnScreen('ACCOUNTANT.png', confidence=0.9)
+            ACCOUNTANT = self.pyautogui.center(ACCOUNTANT)
+            x, y = ACCOUNTANT
+            self.pyautogui.moveTo(x, y)
+            self.pyautogui.click(clicks=2)
+
+        def ppurchasing_email():
+            ppurchasingemail = self.pyautogui.locateOnScreen('ppurchasingemail.png', confidence=0.9)
+            ppurchasingemail = self.pyautogui.center(ppurchasingemail)
+            x, y = ppurchasingemail
+            self.pyautogui.moveTo(x, y)
+            self.pyautogui.click(clicks=2)
+
+        def PURCHASE_LEDGER():
+            PURCHASELEDGER = self.pyautogui.locateOnScreen('PURCHASELEDGER.png', confidence=0.9)
+            PURCHASELEDGER = self.pyautogui.center(PURCHASELEDGER)
+            x, y = PURCHASELEDGER
+            self.pyautogui.moveTo(x, y)
+            self.pyautogui.click(clicks=2)
+
+        mydict = {'ACCOUNT_DIRECTOR': ACCOUNT_DIRECTOR,
+                  'ACCOUNT_MANAGER': ACCOUNT_MANAGER,
+                  'ACCOUNTANT_': ACCOUNTANT_,
+                  'ppurchasing_email': ppurchasing_email,
+                  'PURCHASE_LEDGER': PURCHASE_LEDGER}
+        keynames = ['ACCOUNT_DIRECTOR', 'ACCOUNT_MANAGER', 'ACCOUNTANT_', 'ppurchasing_email', 'PURCHASE_LEDGER']
+
+        return mydict[keynames[num]]()
 
     # def r_vat(self):
     #
@@ -83,19 +171,19 @@ class email:
     # def miai(self):
     #
     # def r_receipt(self, invoicenumber, jobref, amountpaid):
-        # if jobref != 0:
-            # if invoicenumber == 0:
-                # then open job by jobref
-        # elif jobref == 0:
-            # if invoicenumber != 0:
-                # open job by invoicenumber
-        # else:
-            # print(please enter either 'invoicenumber, 0, amountpaid')
-            # print(or enter '0, jobref, amountpaid')
+    # if jobref != 0:
+    # if invoicenumber == 0:
+    # then open job by jobref
+    # elif jobref == 0:
+    # if invoicenumber != 0:
+    # open job by invoicenumber
+    # else:
+    # print(please enter either 'invoicenumber, 0, amountpaid')
+    # print(or enter '0, jobref, amountpaid')
 
+    # if exact amount of invoice is recorded on the job:
+    # then send receipt email
 
-            # if exact amount of invoice is recorded on the job:
-                # then send receipt email
 
 class select:
     import pyautogui
@@ -202,7 +290,9 @@ class select:
                         self.pyautogui.moveTo(x, y)
                         self.pyautogui.click(clicks=2)
                         self.jobfound = True
-                        print('Job {} has now loaded and have double-clicked on it. Lets now wait for it to open'.format(jobref))
+                        print(
+                            'Job {} has now loaded and have double-clicked on it. Lets now wait for it to open'.format(
+                                jobref))
                         while self.jobopened == False:
                             readonly = self.pyautogui.locateOnScreen('readonly.png', confidence=0.9)
                             jobopened = self.pyautogui.locateOnScreen('jobopened.png', confidence=0.9)
@@ -211,7 +301,7 @@ class select:
                                 closejob = self.pyautogui.locateOnScreen('closejob.png', confidence=0.9)
                                 x = closejob.left + closejob.width - 10
                                 y = closejob.top + 20
-                                self.pyautogui.click(x,y)
+                                self.pyautogui.click(x, y)
                                 print('I have now closed job ref {}.'.format(jobref))
                                 break
                             elif jobopened != None:
@@ -232,6 +322,7 @@ class select:
                 select().allhiretab()
                 continue
 
+
 class reminder:
     import pyautogui
     import time
@@ -245,6 +336,6 @@ class reminder:
     def sendreminder(self):
         select().allhiretab()
 
-#reminder().sendreminder()
-#select().openjob('069339')
+# reminder().sendreminder()
+# select().openjob('069339')
 email().r_proforma()
