@@ -396,7 +396,7 @@ class reminder:
         email().r_proforma()
 
 
-reminder().sendproforma('TMP116000')
+reminder().sendproforma('xxxxxxxx')
 
 # def r_vat(self):
 #
