@@ -69,7 +69,7 @@ class email:
                     self.allhiretabsel = True
                     break
 
-    def openjob(self, jobref):
+    def open_job(self, jobref):
         while self.findref == False:
             findref = self.pyautogui.locateOnScreen('findref.png', confidence=0.8)
             if findref != None:
